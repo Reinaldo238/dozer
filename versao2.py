@@ -24,6 +24,16 @@ numeros_somados8 = set()
 moedas8 = 0
 maior_valor8= 0
 
+soma9 = 0
+numeros_somados9 = set()
+moedas9 = 0
+maior_valor9= 0
+
+soma12 = 0
+numeros_somados12 = set()
+moedas12 = 0
+maior_valor12= 0
+
 soma13 = 0
 numeros_somados13 = set()
 moedas13 = 0
@@ -171,6 +181,167 @@ def mesa_sete():
     print(f"Nº de moedas jogadas:: {moedas7}")
     print(f"Maior valor pago:      {maior_valor7/1000000000}")
     print("---------------------------------")
+def mesa_oito():
+
+    global soma8 # usar a variável global
+    global numeros_somados8 # usar o conjunto global
+    global moedas8
+    global maior_valor8
+
+    request = requests.get(f"https://www.degenpusher.com:8080/api/pusher/status?machineId=8", verify=False)
+    todos = json.loads(request.content)
+    jogadas = todos['finished']
+
+    df = pd.DataFrame(columns=["data_hora", "valor", "carteira", "moedas_jogadas", "valor_total_pago", "valor_total_gasto"])
+
+    valor_referencia = 500000000
+
+    for item in jogadas:
+        gameid = item ['gameId']
+
+        if gameid not in numeros_somados8: # verificar se o número já foi somado
+
+            valor = item ['payout']
+
+            soma8 += item['payout'] # somar o número à soma
+            moedas8 += item['coins']
+
+            if valor >= valor_referencia:
+                data_hora = datetime.now()
+                carteira = item['userName']
+                valor_atualizado = valor/1000000000
+                df = pd.concat([df, pd.DataFrame({"valor": [valor_atualizado], "data_hora": [data_hora], "carteira":[carteira], "moedas_jogadas":[moedas8], "valor_total_pago":[soma8/1000000000], "valor_total_gasto": [moedas8*0.05]})], ignore_index=True)
+            
+
+            if item['payout'] > maior_valor8:
+                maior_valor8 = item['payout']
+
+
+            numeros_somados8.add(gameid) # adicionar o número ao conjunto de números já somados
+            
+    if os.path.isfile("dados_mesa_8.xlsx"):
+        df_antigo=pd.read_excel("dados_mesa_8.xlsx")
+        df_novo = pd.concat([df_antigo, df])
+        df_novo.to_excel("dados_mesa_8.xlsx", index=False)
+
+    else:
+        df.to_excel("dados_mesa_8.xlsx", index=False)
+
+    
+    print("---------------------------------")
+    print("ANÁLISE MESA 8")
+    print("---------------------------------")
+    print(f"Total de pagamento:    {soma8/1000000000}")
+    print(f'Valor gasto:           {moedas8 * 0.05}')
+    print(f"Nº de moedas jogadas:: {moedas8}")
+    print(f"Maior valor pago:      {maior_valor8/1000000000}")
+    print("---------------------------------")
+def mesa_nove():
+
+    global soma9 # usar a variável global
+    global numeros_somados9 # usar o conjunto global
+    global moedas9
+    global maior_valor9
+
+    request = requests.get(f"https://www.degenpusher.com:8080/api/pusher/status?machineId=9", verify=False)
+    todos = json.loads(request.content)
+    jogadas = todos['finished']
+
+    df = pd.DataFrame(columns=["data_hora", "valor", "carteira", "moedas_jogadas", "valor_total_pago", "valor_total_gasto"])
+    valor_referencia = 1000000000
+
+    for item in jogadas:
+        gameid = item ['gameId']
+
+        if gameid not in numeros_somados9: # verificar se o número já foi somado
+
+            valor = item ['payout']
+
+            soma9 += item['payout'] # somar o número à soma
+            moedas9 += item['coins']
+            
+            if valor >= valor_referencia:
+                data_hora = datetime.now()
+                carteira = item['userName']
+                valor_atualizado = valor/1000000000
+                df = pd.concat([df, pd.DataFrame({"valor": [valor_atualizado], "data_hora": [data_hora], "carteira":[carteira], "moedas_jogadas":[moedas9], "valor_total_pago":[soma9/1000000000], "valor_total_gasto": [moedas9*0.05]})], ignore_index=True)
+            
+
+            if item['payout'] > maior_valor9:
+                maior_valor9 = item['payout']
+
+
+            numeros_somados9.add(gameid) # adicionar o número ao conjunto de números já somados
+            
+    if os.path.isfile("dados_mesa_9.xlsx"):
+        df_antigo=pd.read_excel("dados_mesa_9.xlsx")
+        df_novo = pd.concat([df_antigo, df])
+        df_novo.to_excel("dados_mesa_9.xlsx", index=False)
+
+    else:
+        df.to_excel("dados_mesa_9.xlsx", index=False)
+    
+    print("---------------------------------")
+    print("ANÁLISE MESA 9")
+    print("---------------------------------")
+    print(f"Total de pagamento:    {soma9/1000000000}")
+    print(f'Valor gasto:           {moedas9 * 0.05}')
+    print(f"Nº de moedas jogadas:: {moedas9}")
+    print(f"Maior valor pago:      {maior_valor9/1000000000}")
+    print("---------------------------------")
+def mesa_doze():
+
+    global soma12 # usar a variável global
+    global numeros_somados12 # usar o conjunto global
+    global moedas12
+    global maior_valor12
+
+    request = requests.get(f"https://www.degenpusher.com:8080/api/pusher/status?machineId=12", verify=False)
+    todos = json.loads(request.content)
+    jogadas = todos['finished']
+
+    df = pd.DataFrame(columns=["data_hora", "valor", "carteira", "moedas_jogadas", "valor_total_pago", "valor_total_gasto"])
+    valor_referencia = 1000000000
+
+    for item in jogadas:
+        gameid = item ['gameId']
+
+        if gameid not in numeros_somados12: # verificar se o número já foi somado
+
+            valor = item ['payout']
+
+            soma12 += item['payout'] # somar o número à soma
+            moedas12 += item['coins']
+            
+            if valor >= valor_referencia:
+                data_hora = datetime.now()
+                carteira = item['userName']
+                valor_atualizado = valor/1000000000
+                df = pd.concat([df, pd.DataFrame({"valor": [valor_atualizado], "data_hora": [data_hora], "carteira":[carteira], "moedas_jogadas":[moedas12], "valor_total_pago":[soma12/1000000000], "valor_total_gasto": [moedas12*0.25]})], ignore_index=True)
+            
+
+            if item['payout'] > maior_valor12:
+                maior_valor12 = item['payout']
+
+
+            numeros_somados12.add(gameid) # adicionar o número ao conjunto de números já somados
+            
+    if os.path.isfile("dados_mesa_12.xlsx"):
+        df_antigo=pd.read_excel("dados_mesa_12.xlsx")
+        df_novo = pd.concat([df_antigo, df])
+        df_novo.to_excel("dados_mesa_12.xlsx", index=False)
+
+    else:
+        df.to_excel("dados_mesa_12.xlsx", index=False)
+    
+    print("---------------------------------")
+    print("ANÁLISE MESA 12")
+    print("---------------------------------")
+    print(f"Total de pagamento:    {soma12/1000000000}")
+    print(f'Valor gasto:           {moedas12 * 0.25}')
+    print(f"Nº de moedas jogadas:: {moedas12}")
+    print(f"Maior valor pago:      {maior_valor12/1000000000}")
+    print("---------------------------------")
 def mesa_treze():
 
     global soma13 # usar a variável global
@@ -283,7 +454,7 @@ def mesa_cartoze():
 def mesa_quinze():
 
     global soma15 # usar a variável global
-    global numeros_somados15# usar o conjunto global
+    global numeros_somados15 # usar o conjunto global
     global moedas15
     global maior_valor15
 
@@ -292,12 +463,13 @@ def mesa_quinze():
     jogadas = todos['finished']
 
     df = pd.DataFrame(columns=["data_hora", "valor", "carteira", "moedas_jogadas", "valor_total_pago", "valor_total_gasto"])
-    valor_referencia = 2000000000
+
+    valor_referencia = 1000000000
 
     for item in jogadas:
         gameid = item ['gameId']
 
-        if gameid not in numeros_somados15: # verificar se o número já foi somad
+        if gameid not in numeros_somados15: # verificar se o número já foi somado
 
             valor = item ['payout']
 
@@ -329,7 +501,7 @@ def mesa_quinze():
     print("ANÁLISE MESA 15")
     print("---------------------------------")
     print(f"Total de pagamento:    {soma15/1000000000}")
-    print(f'Valor gasto:           {moedas15 * 0.05}')
+    print(f'Valor gasto:           {moedas15 * 0.1}')
     print(f"Nº de moedas jogadas:: {moedas15}")
     print(f"Maior valor pago:      {maior_valor15/1000000000}")
     print("---------------------------------")
@@ -563,6 +735,12 @@ while True:
             mesa_quatro()
         if "7" in escolher:
             mesa_sete()
+        if "8" in escolher:
+            mesa_oito()
+        if "9" in escolher:
+            mesa_nove()
+        if "12" in escolher:
+            mesa_doze()
         if "13" in escolher:
             mesa_treze()
         if "14" in escolher:
@@ -580,6 +758,9 @@ while True:
         if "0" in escolher:
             mesa_quatro()
             mesa_sete()
+            mesa_oito()
+            mesa_nove()
+            mesa_doze()
             mesa_treze()
             mesa_cartoze()
             mesa_quinze()
